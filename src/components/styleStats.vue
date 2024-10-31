@@ -3,7 +3,7 @@
     <div v-if="show" class="modal" @click.self="handleOutsideClick">
         <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
-            <h3>编辑战术形态属性</h3>
+            <h3>{{ roleName }}属性</h3>
             <div class="attributes-container">
                 <div v-for="(value, index) in attributes" :key="index" class="attribute-item">
                     <label :for="'attribute-' + index">{{ attributeNames[index] }}:</label>
@@ -27,6 +27,10 @@ export default defineComponent({
         },
         attributes: {
             type: Array,
+            required: true
+        },
+        roleName: {
+            type: String,
             required: true
         }
     },

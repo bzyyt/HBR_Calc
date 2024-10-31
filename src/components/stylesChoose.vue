@@ -24,8 +24,8 @@
             <button @click="showModal = true" :disabled="!selectedStyle">六维属性</button>
         </div>
 
-        <EditStyleModal :show="showModal" :attributes="styleAttributes" @close="showModal = false"
-            @save="saveAttributes" />
+        <EditStyleModal :show="showModal" :attributes="styleAttributes" :roleName="selectedRole"
+            @close="showModal = false" @save="saveAttributes" />
     </div>
 </template>
 
