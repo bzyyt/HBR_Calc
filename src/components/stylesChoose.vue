@@ -21,16 +21,24 @@
                     {{ style }}
                 </option>
             </select>
+            <button @click="showModal = true">六维属性</button>
         </div>
+
+        <EditStyleModal :show="showModal" :attributes="styleAttributes" @close="showModal = false"
+            @save="saveAttributes" />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue';
 import useStylesList from '@/store/stylesList'; // 确保路径正确
+import EditStyleModal from '@/components/styleStats.vue'; // 确保路径正确
 
 export default defineComponent({
     name: 'StylesChoose',
+    components: {
+        EditStyleModal
+    },
     props: {
         roleNumber: {
             type: Number,
@@ -48,6 +56,8 @@ export default defineComponent({
         const selectedTeam = ref('');
         const selectedRole = ref('');
         const selectedStyle = ref('');
+        const showModal = ref(false);
+        const styleAttributes = ref(Array(6).fill(''));
 
         const filteredRoles = computed(() => {
             return selectedTeam.value ? Object.keys(stylesListStore.styleList[selectedTeam.value]) : [];
@@ -78,6 +88,11 @@ export default defineComponent({
             return props.selectedRoles.includes(role) && role !== selectedRole.value;
         };
 
+        const saveAttributes = (attributes: string[]) => {
+            console.log('Saved attributes:', attributes);
+            styleAttributes.value = attributes;
+        };
+
         watch(selectedRole, (newRole, oldRole) => {
             if (newRole !== oldRole) {
                 handleRoleChange();
@@ -94,7 +109,10 @@ export default defineComponent({
             updateRoles,
             updateStyles,
             handleRoleChange,
-            isRoleSelected
+            isRoleSelected,
+            showModal,
+            styleAttributes,
+            saveAttributes
         };
     }
 });
@@ -108,12 +126,12 @@ export default defineComponent({
 }
 
 .team-select {
-    width: 130px;
+    width: 150px;
     /* 固定宽度 */
 }
 
 .role-select {
-    width: 140px;
+    width: 200px;
     /* 固定宽度 */
 }
 
