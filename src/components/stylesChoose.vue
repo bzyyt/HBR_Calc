@@ -24,8 +24,8 @@
             <button @click="showModal = true" :disabled="!selectedStyle">六维属性</button>
         </div>
 
-        <EditStyleModal :show="showModal" :attributes="styleAttributes" :roleName="selectedRole"
-            @close="showModal = false" @save="saveAttributes" />
+        <EditStyleModal :show="showModal" :attributes="styleAttributes[selectedStyle] || Array(6).fill('')"
+            :roleName="selectedRole" @close="showModal = false" @save="saveAttributes" />
     </div>
 </template>
 
@@ -57,7 +57,7 @@ export default defineComponent({
         const selectedRole = ref('');
         const selectedStyle = ref('');
         const showModal = ref(false);
-        const styleAttributes = ref(Array(6).fill(''));
+        const styleAttributes = ref<{ [key: string]: string[] }>({});
 
         const filteredRoles = computed(() => {
             return selectedTeam.value ? Object.keys(stylesListStore.styleList[selectedTeam.value]) : [];
@@ -72,8 +72,12 @@ export default defineComponent({
             if (!selectedTeam.value) {
                 selectedRole.value = '';
                 selectedStyle.value = '';
+            } else {
+                selectedRole.value = '';
+                selectedStyle.value = '';
             }
         };
+
         const updateStyles = () => {
             if (!selectedRole.value) {
                 selectedStyle.value = '';
@@ -81,6 +85,7 @@ export default defineComponent({
         };
 
         const handleRoleChange = () => {
+            selectedStyle.value = ''; // 重置 selectedStyle
             emit('update-role', props.roleNumber, selectedRole.value);
         };
 
@@ -88,9 +93,15 @@ export default defineComponent({
             return props.selectedRoles.includes(role) && role !== selectedRole.value;
         };
 
+        const updateStyleAttributes = () => {
+            if (!styleAttributes.value[selectedStyle.value]) {
+                styleAttributes.value[selectedStyle.value] = Array(6).fill('');
+            }
+        };
+
         const saveAttributes = (attributes: string[]) => {
-            console.log('Saved attributes:', attributes);
-            styleAttributes.value = attributes;
+            styleAttributes.value[selectedStyle.value] = attributes;
+            console.log(`Attributes for ${selectedStyle.value}:`, attributes);
         };
 
         watch(selectedRole, (newRole, oldRole) => {
@@ -112,7 +123,8 @@ export default defineComponent({
             isRoleSelected,
             showModal,
             styleAttributes,
-            saveAttributes
+            saveAttributes,
+            updateStyleAttributes
         };
     }
 });
