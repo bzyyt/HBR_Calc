@@ -1,6 +1,6 @@
 <template>
     <div class="styleschoose">
-        <div>
+        <div class="content">
             <span class="role-label">角色{{ roleNumber }}：</span>
             <select id="team-select" v-model="selectedTeam" @change="updateRoles" class="team-select">
                 <option disabled value="">请选择队伍</option>
@@ -119,6 +119,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.styleschoose {
+    margin-top: 10px;
+    /* 上间隔 */
+    margin-bottom: 10px;
+    /* 下间隔 */
+}
+
 .role-label {
     display: inline-block;
     width: 100px;
@@ -128,15 +135,21 @@ export default defineComponent({
 .team-select {
     width: 150px;
     /* 固定宽度 */
+    margin-right: 10px;
+    /* 添加右侧间隔 */
 }
 
 .role-select {
-    width: 200px;
+    width: 140px;
     /* 固定宽度 */
+    margin-right: 10px;
+    /* 添加右侧间隔 */
 }
 
 .style-select {
-    width: 250px;
+    width: 240px;
     /* 固定宽度 */
+    margin-right: 10px;
+    /* 添加右侧间隔 */
 }
 </style>
