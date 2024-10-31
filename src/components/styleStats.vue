@@ -7,7 +7,9 @@
             <div class="attributes-container">
                 <div v-for="(value, index) in attributes" :key="index" class="attribute-item">
                     <label :for="'attribute-' + index">{{ attributeNames[index] }}:</label>
-                    <input :id="'attribute-' + index" v-model="attributes[index]" type="text" />
+                    <input :id="'attribute-' + index" v-model="attributes[index]" type="number"
+                        :min="attributeNames[index] === '宝珠强化' ? 0 : undefined"
+                        :max="attributeNames[index] === '宝珠强化' ? 5 : undefined" />
                 </div>
             </div>
             <button @click="saveAttributes">保存</button>
@@ -36,7 +38,7 @@ export default defineComponent({
     },
     emits: ['close', 'save'],
     setup(props, { emit }) {
-        const attributeNames = ['力量', '灵巧', '精神', '体力', '智力', '运气'];
+        const attributeNames = ['力量', '灵巧', '精神', '体力', '智力', '运气', '宝珠强化'];
 
         const closeModal = () => {
             emit('close');
@@ -44,6 +46,7 @@ export default defineComponent({
 
         const saveAttributes = () => {
             emit('save', props.attributes);
+            console.log('保存属性', props.attributes);
             closeModal();
         };
 
