@@ -33,7 +33,7 @@ export const useStylesList = defineStore('stylesList', {
     actions: {
         async loadStyles() {
             try {
-                const response = await fetch('/../../public/res/data/styles.json');
+                const response = await fetch('/HBR_Calc/res/data/styles.json'); // 使用绝对路径
                 const data: StyleList = await response.json();
                 this.styleList = data;
             } catch (error) {
