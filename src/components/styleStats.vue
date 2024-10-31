@@ -4,9 +4,11 @@
         <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
             <h3>编辑战术形态属性</h3>
-            <div v-for="(value, index) in attributes" :key="index">
-                <label :for="'attribute-' + index">{{ attributeNames[index] }}:</label>
-                <input :id="'attribute-' + index" v-model="attributes[index]" type="text" />
+            <div class="attributes-container">
+                <div v-for="(value, index) in attributes" :key="index" class="attribute-item">
+                    <label :for="'attribute-' + index">{{ attributeNames[index] }}:</label>
+                    <input :id="'attribute-' + index" v-model="attributes[index]" type="text" />
+                </div>
             </div>
             <button @click="saveAttributes">保存</button>
         </div>
@@ -49,20 +51,6 @@ export default defineComponent({
             }
         };
 
-        // watch(() => props.show, (newVal) => {
-        //     if (newVal) {
-        //         document.addEventListener('click', handleOutsideClick);
-        //     } else {
-        //         document.removeEventListener('click', handleOutsideClick);
-        //     }
-        // });
-
-        // onMounted(() => {
-        //     if (props.show) {
-        //         document.addEventListener('click', handleOutsideClick);
-        //     }
-        // });
-
         onBeforeUnmount(() => {
             document.removeEventListener('click', handleOutsideClick);
         });
@@ -96,7 +84,8 @@ export default defineComponent({
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 400px;
+    /* 增加宽度 */
     text-align: center;
     z-index: 1001;
     /* 设置比 .modal 更高的 z-index 值 */
@@ -107,5 +96,32 @@ export default defineComponent({
     top: 10px;
     right: 10px;
     cursor: pointer;
+}
+
+.attributes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.attribute-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* 每个属性项之间的间隔 */
+}
+
+.attribute-item label {
+    width: 80px;
+    /* 增加标签的宽度 */
+    margin-right: 10px;
+    /* 标签和输入框之间的间隔 */
+    text-align: right;
+    /* 标签文本右对齐 */
+}
+
+.attribute-item input {
+    width: 60px;
+    /* 固定输入框的宽度 */
 }
 </style>
