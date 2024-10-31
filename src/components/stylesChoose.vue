@@ -1,19 +1,21 @@
 <template>
     <div class="styleschoose">
-        <div>角色{{ roleNumber }}：
-            <select id="team-select" v-model="selectedTeam" @change="updateRoles">
+        <div>
+            <span class="role-label">角色{{ roleNumber }}：</span>
+            <select id="team-select" v-model="selectedTeam" @change="updateRoles" class="team-select">
                 <option disabled value="">请选择队伍</option>
                 <option v-for="(people, team) in teams" :key="team" :value="team">
                     {{ team }}
                 </option>
             </select>
-            <select id="role-select" v-model="selectedRole" @change="handleRoleChange" :disabled="!selectedTeam">
+            <select id="role-select" v-model="selectedRole" @change="handleRoleChange" :disabled="!selectedTeam"
+                class="role-select">
                 <option disabled value="">请选择角色</option>
                 <option v-for="role in filteredRoles" :key="role" :value="role" :disabled="isRoleSelected(role)">
                     {{ role }}
                 </option>
             </select>
-            <select id="style-select" v-model="selectedStyle" :disabled="!selectedRole">
+            <select id="style-select" v-model="selectedStyle" :disabled="!selectedRole" class="style-select">
                 <option disabled value="">请选择战术形态</option>
                 <option v-for="style in filteredStyles" :key="style" :value="style">
                     {{ style }}
@@ -98,4 +100,25 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style scoped>
+.role-label {
+    display: inline-block;
+    width: 100px;
+    /* 固定宽度 */
+}
+
+.team-select {
+    width: 130px;
+    /* 固定宽度 */
+}
+
+.role-select {
+    width: 140px;
+    /* 固定宽度 */
+}
+
+.style-select {
+    width: 250px;
+    /* 固定宽度 */
+}
+</style>
