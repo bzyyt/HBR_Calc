@@ -1,13 +1,14 @@
 <template>
     <div class="app">
         <HeadWeb />
-        <CharacterStyles />
+        <MultipleStylesChoose />
     </div>
 </template>
 
-<script setup lang ='ts' name="App">
+<script setup lang='ts' name="App">
 import HeadWeb from '@/components/headWeb.vue'
-import CharacterStyles from '@/components/characterStyles.vue'
+import StylesChoose from '@/components/stylesChoose.vue'
+import MultipleStylesChoose from './components/multipleStylesChoose.vue';
 </script>
 
 <style></style>
