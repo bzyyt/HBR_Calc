@@ -15,7 +15,8 @@
                     {{ role }}
                 </option>
             </select>
-            <select id="style-select" v-model="selectedStyle" :disabled="!selectedRole" class="style-select">
+            <select id="style-select" v-model="selectedStyle" @change="updateStyleAttributes" :disabled="!selectedRole"
+                class="style-select">
                 <option disabled value="">请选择战术形态</option>
                 <option v-for="style in filteredStyles" :key="style" :value="style">
                     {{ style }}
@@ -24,7 +25,7 @@
             <button @click="showModal = true" :disabled="!selectedStyle">六维属性</button>
         </div>
 
-        <EditStyleModal :show="showModal" :attributes="styleAttributes[selectedStyle] || [300, 300, 300, 300, 300, 300, 0]"
+        <EditStyleModal :show="showModal" :attributes="styleAttributes[selectedStyle] || Array(7).fill(0)"
             :roleName="selectedRole" @close="showModal = false" @save="saveAttributes" />
     </div>
 </template>
@@ -57,7 +58,7 @@ export default defineComponent({
         const selectedRole = ref('');
         const selectedStyle = ref('');
         const showModal = ref(false);
-        const styleAttributes = ref<{ [key: string]: string[] }>({});
+        const styleAttributes = computed(() => stylesListStore.styleAttributes);
 
         const filteredRoles = computed(() => {
             return selectedTeam.value ? Object.keys(stylesListStore.styleList[selectedTeam.value]) : [];
@@ -95,12 +96,12 @@ export default defineComponent({
 
         const updateStyleAttributes = () => {
             if (!styleAttributes.value[selectedStyle.value]) {
-                styleAttributes.value[selectedStyle.value] = Array(6).fill('');
+                stylesListStore.saveAttributes(selectedStyle.value, Array(7).fill(0));
             }
         };
 
-        const saveAttributes = (attributes: string[]) => {
-            styleAttributes.value[selectedStyle.value] = attributes;
+        const saveAttributes = (attributes: number[]) => {
+            stylesListStore.saveAttributes(selectedStyle.value, attributes);
             console.log(`Attributes for ${selectedStyle.value}:`, attributes);
         };
 

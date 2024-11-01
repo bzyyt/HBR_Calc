@@ -7,7 +7,7 @@
             <div class="attributes-container">
                 <div v-for="(value, index) in attributes" :key="index" class="attribute-item">
                     <label :for="'attribute-' + index">{{ attributeNames[index] }}:</label>
-                    <input :id="'attribute-' + index" v-model="attributes[index]" type="number"
+                    <input :id="'attribute-' + index" v-model.number="attributes[index]" type="number"
                         :min="attributeNames[index] === '宝珠强化' ? 0 : undefined"
                         :max="attributeNames[index] === '宝珠强化' ? 5 : undefined" />
                 </div>

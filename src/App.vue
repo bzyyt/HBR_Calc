@@ -3,6 +3,7 @@
         <HeadWeb />
         <div class="content">
             <MultipleStylesChoose />
+            <StylesListDisplay />
             <!-- 你可以在这里添加其他组件 -->
         </div>
     </div>
@@ -11,6 +12,7 @@
 <script setup lang='ts' name="App">
 import HeadWeb from '@/components/headWeb.vue'
 import MultipleStylesChoose from './components/multipleStylesChoose.vue';
+import StylesListDisplay from './components/stylesListDisplay.vue';
 </script>
 
 <style scoped>

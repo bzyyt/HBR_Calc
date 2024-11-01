@@ -11,6 +11,7 @@ export interface State {
     selectedTeam: string;
     selectedRole: string;
     selectedStyle: string;
+    styleAttributes: { [style: string]: number[] };
 }
 
 export const useStylesList = defineStore('stylesList', {
@@ -18,7 +19,8 @@ export const useStylesList = defineStore('stylesList', {
         styleList: {},
         selectedTeam: '',
         selectedRole: '',
-        selectedStyle: ''
+        selectedStyle: '',
+        styleAttributes: {}
     }),
     getters: {
         filteredRoles: (state): string[] => {
@@ -28,6 +30,22 @@ export const useStylesList = defineStore('stylesList', {
             return state.selectedTeam && state.selectedRole
                 ? state.styleList[state.selectedTeam][state.selectedRole]
                 : [];
+        },
+        getAllStyles: (state): { team: string, role: string, style: string, attributes: number[] }[] => {
+            const styles = [];
+            for (const team in state.styleList) {
+                for (const role in state.styleList[team]) {
+                    for (const style of state.styleList[team][role]) {
+                        styles.push({
+                            team,
+                            role,
+                            style,
+                            attributes: state.styleAttributes[style] || Array(7).fill(0)
+                        });
+                    }
+                }
+            }
+            return styles;
         }
     },
     actions: {
@@ -50,6 +68,9 @@ export const useStylesList = defineStore('stylesList', {
             if (!this.selectedRole) {
                 this.selectedStyle = '';
             }
+        },
+        saveAttributes(style: string, attributes: number[]) {
+            this.styleAttributes[style] = attributes;
         }
     }
 });
