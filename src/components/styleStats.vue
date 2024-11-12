@@ -1,5 +1,6 @@
 <!-- src/components/styleStats.vue -->
 <template>
+    <!-- 角色初始状态页面 -->
     <div v-if="show" class="modal" @click.self="handleOutsideClick">
         <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>

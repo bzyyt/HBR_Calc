@@ -3,7 +3,7 @@
         <HeadWeb />
         <div class="content">
             <MultipleStylesChoose />
-            <StylesListDisplay />
+            <!-- <StylesListDisplay /> -->
             <!-- 你可以在这里添加其他组件 -->
         </div>
     </div>

@@ -1,4 +1,5 @@
 <template>
+    <!-- 角色选择组件 -->
     <div class="styleschoose">
         <div class="content">
             <span class="role-label">角色{{ roleNumber }}：</span>
