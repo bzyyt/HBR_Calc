@@ -14,6 +14,7 @@ export const useStylesList = defineStore('stylesList', {
     },
     getters: {
         teamList: (state): string[] => {
+            console.log(4);
             return Object.keys(state.styleList);
         }
     },
@@ -23,15 +24,17 @@ export const useStylesList = defineStore('stylesList', {
                 const response = await fetch('/HBR_Calc/res/data/styles.json');
                 const data: StyleList = await response.json();
                 this.styleList = data;
+                return true; // 数据加载完成
             } catch (error) {
                 console.error('Failed to load styles:', error);
+                return false; // 数据加载失败
             }
         },
-        filteredRoles(key: string) {
+        filteredRoles(key: string): string[] {
             this.styleList
             return key ? Object.keys(this.styleList[key]) : [];
         },
-        filteredStyles(keyTeam: string, keyRole: string) {
+        filteredStyles(keyTeam: string, keyRole: string): string[] {
             return keyTeam && keyRole
                 ? this.styleList[keyTeam][keyRole]
                 : [];

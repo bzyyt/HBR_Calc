@@ -9,14 +9,15 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
-import { useStylesList } from '@/store/stylesList'; // 确保路径正确
-import StylesChoose from '@/components/stylesChoose.vue'; // 确保路径正确
+import { ref, onMounted } from 'vue';
+import { useStylesList } from '@/store/stylesList';
 
 const stylesListStore = useStylesList();
 
-onMounted(() => {
-    stylesListStore.loadStyles();
+import StylesChoose from '@/components/stylesChoose.vue'; // 确保路径正确
+
+onMounted(async () => {
+    await stylesListStore.loadStyles();
 });
 
 </script>

@@ -5,7 +5,7 @@
             <span class="role-label">角色{{ roleNumber }}：</span>
             <select id="team-select" v-model="selectedTeam" @change="TeamChange" class="team-select">
                 <option disabled value="">请选择队伍</option>
-                <option v-for="(people, team) in teams" :key="team" :value="team">
+                <option v-for="team in teams" :key="team" :value="team">
                     {{ team }}
                 </option>
             </select>
@@ -23,29 +23,41 @@
                     {{ style }}
                 </option>
             </select>
-            <!-- <button @click="showModal = true" :disabled="!selectedStyle">六维属性</button> -->
+            <button @click="showModal = true" :disabled="!selectedStyle">六维属性</button>
         </div>
 
-        <!-- <EditStyleModal :show="showModal" :attributes="styleAttributes[selectedStyle] || Array(7).fill(0)"
-            :roleName="selectedRole" @close="showModal = false" @save="saveAttributes" /> -->
+        <!-- <EditStyleModal :show="showModal" :teamName="selectedTeam" :roleName="selectedRole"
+            :styleName="selectedStyle" /> -->
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import useStylesList from '@/store/stylesList';
 import EditStyleModal from '@/components/styleStats.vue';
 import { stylesChooseTemp } from '@/store/stylesChooseTemp';
+import { ref, watch } from 'vue';
 
 const props = defineProps(['roleNumber']);
+const showModal = ref(false);
 
 //队伍、角色、战术形态的初值
 const selectedTeam = ref('');
 const selectedRole = ref('');
 const selectedStyle = ref('');
 
-//这里从styleList中获取每一列的数据
-const teams = useStylesList().styleList;
+const stylesListStore = useStylesList();
+const teams = ref([] as string[]);
+
+watch(
+    () => stylesListStore.styleList,
+    (newVal) => {
+        if (Object.keys(newVal).length > 0) {
+            teams.value = stylesListStore.teamList;
+        }
+    },
+    { immediate: true }
+);
+
 const filteredRoles = useStylesList().filteredRoles;
 const filteredStyles = useStylesList().filteredStyles;
 
