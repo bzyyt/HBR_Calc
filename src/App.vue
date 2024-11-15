@@ -12,7 +12,6 @@
 <script setup lang='ts' name="App">
 import HeadWeb from '@/components/headWeb.vue'
 import MultipleStylesChoose from './components/multipleStylesChoose.vue';
-import StylesListDisplay from './components/stylesListDisplay.vue';
 </script>
 
 <style scoped>
