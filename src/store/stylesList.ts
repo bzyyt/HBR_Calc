@@ -14,7 +14,6 @@ export const useStylesList = defineStore('stylesList', {
     },
     getters: {
         teamList: (state): string[] => {
-            console.log(4);
             return Object.keys(state.styleList);
         }
     },
@@ -31,7 +30,6 @@ export const useStylesList = defineStore('stylesList', {
             }
         },
         filteredRoles(key: string): string[] {
-            this.styleList
             return key ? Object.keys(this.styleList[key]) : [];
         },
         filteredStyles(keyTeam: string, keyRole: string): string[] {

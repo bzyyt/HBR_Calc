@@ -1,76 +1,67 @@
 <!-- src/components/styleStats.vue -->
 <template>
     <!-- 角色初始状态页面 -->
-    <div v-if="show" class="modal" @click.self="handleOutsideClick">
+    <div class="modal" @click="handleOutsideClick">
         <div class="modal-content">
-            <span class="close" @click="closeModal">&times;</span>
+            <span class="close" @click="saveState">&times;</span>
             <h3>{{ roleName }}属性</h3>
             <div class="attributes-container">
-                <div v-for="(value, index) in attributes" :key="index" class="attribute-item">
-                    <label :for="'attribute-' + index">{{ attributeNames[index] }}:</label>
-                    <input :id="'attribute-' + index" v-model.number="attributes[index]" type="number"
-                        :min="attributeNames[index] === '宝珠强化' ? 0 : undefined"
-                        :max="attributeNames[index] === '宝珠强化' ? 5 : undefined" />
+                <div v-for="(value, index) in styleStats" :key="index" class="attribute-item">
+                    <label :for="index">{{ index }}:</label>
+                    <input :id="index" v-model.number="styleStats[index]" :type="index !== '戒指' ? 'number' : undefined"
+                        :min="styleStats[index] === '宝珠强化' ? 0 : undefined"
+                        :max="styleStats[index] === '宝珠强化' ? 5 : undefined" />
                 </div>
             </div>
-            <button @click="saveAttributes">保存</button>
+            <button @click="saveState">保存</button>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, watch } from 'vue';
+<script setup lang="ts" name="EditStyleModal">
+import { useStateTempStore, type StyleTemp } from '@/store/statesTemp';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
+const styleTemp = useStateTempStore();
 
-export default defineComponent({
-    name: 'EditStyleModal',
-    props: {
-        show: {
-            type: Boolean,
-            required: true
-        },
-        attributes: {
-            type: Array,
-            required: true
-        },
-        roleName: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    teamName: {
+        type: String,
+        required: true
     },
-    emits: ['close', 'save'],
-    setup(props, { emit }) {
-        const attributeNames = ['力量', '灵巧', '精神', '体力', '智力', '运气', '宝珠强化'];
-
-        const closeModal = () => {
-            emit('close');
-        };
-
-        const saveAttributes = () => {
-            emit('save', props.attributes);
-            console.log('保存属性', props.attributes);
-            closeModal();
-        };
-
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (!props.show) return; // 检查弹窗是否开启
-            const modalContent = document.querySelector('.modal-content');
-            if (modalContent && !modalContent.contains(event.target as Node)) {
-                saveAttributes();
-            }
-        };
-
-        onBeforeUnmount(() => {
-            document.removeEventListener('click', handleOutsideClick);
-        });
-
-        return {
-            attributeNames,
-            closeModal,
-            saveAttributes,
-            handleOutsideClick
-        };
-    }
+    roleName: {
+        type: String,
+        required: true
+    },
+    styleName: {
+        type: String,
+        required: true
+    },
 });
+
+const emit = defineEmits(['close'])
+
+const styleStats = ref({} as StyleTemp);
+
+const saveState = () => {
+    emit('close');
+}
+
+onBeforeUnmount(() => {
+    styleTemp.updateStyleTemp(props.teamName, props.roleName, props.styleName, styleStats.value);
+});
+
+onMounted(() => {
+    styleStats.value = styleTemp.getStyleTemp(props.teamName, props.roleName, props.styleName);
+    console.log(styleStats.value);
+});
+
+const handleOutsideClick = (event: MouseEvent) => {
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent && !modalContent.contains(event.target as Node)) {
+        emit('close');
+    }
+};
+
 </script>
 
 <style scoped>

@@ -9,16 +9,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useStylesList } from '@/store/stylesList';
+import { useStateTempStore } from '@/store/statesTemp';
 
 const stylesListStore = useStylesList();
+const StateTemp = useStateTempStore();
 
 import StylesChoose from '@/components/stylesChoose.vue'; // 确保路径正确
 
 onMounted(async () => {
     await stylesListStore.loadStyles();
 });
+
+watch(
+    () => stylesListStore.styleList,
+    (newVal) => {
+        if (Object.keys(newVal).length > 0) {
+            StateTemp.initStateTemp();
+        }
+    },
+    { immediate: true }
+);
 
 </script>
 

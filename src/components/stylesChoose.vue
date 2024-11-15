@@ -26,8 +26,8 @@
             <button @click="showModal = true" :disabled="!selectedStyle">六维属性</button>
         </div>
 
-        <!-- <EditStyleModal :show="showModal" :teamName="selectedTeam" :roleName="selectedRole"
-            :styleName="selectedStyle" /> -->
+        <EditStyleModal v-if="showModal" :teamName="selectedTeam" :roleName="selectedRole" :styleName="selectedStyle"
+            @close="showModal = false" />
     </div>
 </template>
 
